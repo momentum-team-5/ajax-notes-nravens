@@ -18,8 +18,7 @@ document.addEventListener('submit', function (event) {
 
 
 function editNote(id) {
-const itemToEdit = document.querySelector(`div[data-id='${id}']`)
-note_text = itemToEdit.children[1].value
+note_text = document.querySelector((`#paragraph${id}`)).value
 
     fetch(url + "/" + id, {
         method: 'PATCH',
@@ -42,7 +41,7 @@ function deleteNote(id) {
           })
             .then(res => res.json())
             .then(data => {
-              const itemToRemove = document.querySelector(`div[data-id='${id}']`)
+              const itemToRemove = document.querySelector((`#div${id}`))
               itemToRemove.remove()
             })
 }
@@ -84,26 +83,32 @@ fetch(url)
 
 function createNote(id, title, text) {
     new_div = document.createElement('div')
-    new_div.setAttribute('data-id', id)
+    new_div.id = `div${id}`
+    new_div.dataset.id = id
     notesDiv.appendChild(new_div)
 
     new_header = document.createElement('h2')
+    new_header.id = `header${id}`
     new_div.appendChild(new_header)
     new_header.innerText = title
 
     new_paragraph = document.createElement('textarea')
+    new_paragraph.id = `paragraph${id}`
     new_div.appendChild(new_paragraph)
     new_paragraph.innerText = text
 
     const deleteIcon = document.createElement('span')
-        deleteIcon.classList.add('fas', 'fa-times', 'mar-l-xs', 'delete')
-        new_div.appendChild(deleteIcon)
-        deleteIcon.innerText = 'DELETE  '
+    deleteIcon.id = `delete${id}`
+    deleteIcon.classList.add('fas', 'fa-times', 'mar-l-xs', 'delete')
+    new_div.appendChild(deleteIcon)
+    deleteIcon.innerText = 'DELETE  '
 
     const editIcon = document.createElement('span')
-        editIcon.classList.add('fas', 'fa-times', 'mar-l-xs', 'edit')
-        new_div.appendChild(editIcon)
-        editIcon.innerText = '  EDIT'
+    editIcon.id = `edit${id}`
+    editIcon.classList.add('fas', 'fa-times', 'mar-l-xs', 'edit')
+    new_div.appendChild(editIcon)
+    editIcon.innerText = '  EDIT'
+    
 }
 
 fetchAll()
